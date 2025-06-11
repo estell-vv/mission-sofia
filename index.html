@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <title>Мисия: София</title>
+  <style>
+    body { font-family: Arial; text-align: center; background: #f0f8ff; padding: 2em; }
+    .crossword { display: grid; grid-template-columns: repeat(7, 50px); gap: 5px; justify-content: center; margin-bottom: 1em; }
+    .crossword input { width: 50px; height: 50px; font-size: 24px; text-align: center; }
+    .sound-button { margin: 0.5em; padding: 0.5em 1em; }
+    .hidden-letter { background: lightgreen; }
+  </style>
+</head>
+<body>
+  <h1>Мисия: София</h1>
+  <div class="crossword">
+    <input id="cell0" maxlength="1" disabled>
+    <input id="cell1" maxlength="1" disabled>
+    <input id="cell2" maxlength="1" disabled>
+    <input id="cell3" maxlength="1" disabled>
+    <input id="cell4" maxlength="1" disabled>
+    <input id="cell5" maxlength="1" disabled>
+    <input id="cell6" maxlength="1" disabled>
+  </div>
+
+  <div id="clues">
+    <!-- Примери за 7 бутона: котка, куче, кон, крава, овца, петел, лъв -->
+  </div>
+
+<script>
+  const animals = [
+    {name: 'котка', letter: 'З', sound: 'sounds/cat.wav'},
+    {name: 'куче',  letter: 'О', sound: 'sounds/dog.wav'},
+    {name: 'кон',  letter: 'О', sound: 'sounds/horse.wav'},
+    {name: 'крава', letter: 'П', sound: 'sounds/cow.wav'},
+    {name: 'овца',  letter: 'А', sound: 'sounds/sheep.wav'},
+    {name: 'петел',   letter: 'Р', sound: 'sounds/rooster.wav'},
+    {name: 'лъв',  letter: 'К', sound: 'sounds/lion.mp3'},
+  ];
+
+  const cluesDiv = document.getElementById('clues');
+  animals.forEach((a, idx) => {
+    const btn = document.createElement('button');
+    btn.textContent = `Пусни звук: ${a.name}`;
+    btn.className = 'sound-button';
+    btn.onclick = () => {
+      const audio = new Audio(a.sound);
+      audio.play();
+      setTimeout(() => {
+        const ans = prompt(`Кое животно беше? (бг)`);
+        if (ans && ans.toLowerCase() === a.name) {
+          document.getElementById('cell' + idx).value = a.letter;
+          document.getElementById('cell' + idx).classList.add('hidden-letter');
+        } else {
+          alert('Опитай пак!');
+        }
+      }, 100);
+    };
+    cluesDiv.appendChild(btn);
+  });
+</script>
+</body>
+</html>
